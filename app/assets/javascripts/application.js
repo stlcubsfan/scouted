@@ -14,4 +14,8 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require turbolinks
+//= require angular.min
+//= require angular-route
+//= require angular-resource
+//= require stockScouter
 //= require_tree .
