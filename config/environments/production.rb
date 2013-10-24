@@ -82,7 +82,7 @@ Scouted::Application.configure do
     password: ENV["GMAIL_PASSWORD"]
   }
 
-  config.action_mailer.default_url_options = { :host => 'scouted.herokupapp.com' }
+  config.action_mailer.default_url_options = { :host => 'scouted.herokuapp.com' }
   # Disable automatic flushing of the log to improve performance.
   # config.autoflush_log = false
 
