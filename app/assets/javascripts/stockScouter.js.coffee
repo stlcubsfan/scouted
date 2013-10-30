@@ -24,3 +24,5 @@ $(document).on 'page:load', ->
   $('[ng-app]').each ->
     module = $(this).attr('ng-app')
     angular.bootstrap(this, [module])
+  $("a[rel~=popover], .has-popover").popover()
+  $("a[rel~=tooltip], .has-tooltip").tooltip()

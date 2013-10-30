@@ -17,8 +17,8 @@
     </thead>
     <tbody>
         <tr ng-repeat="stock in portfolioStocks"
-            ng-class="stock.adviceClass">
-            <td>{{stock.sym}}</td>
+            ng-class="stock.advice.val" >
+            <td><a tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="{{stock.advice.msg}}">{{stock.sym}}</a></td>
             <td>{{stock.price | currency}} </td>
             <td>{{stock.currentPrice | currency }}</td>
             <td><span ng-class="{'text-success': stock.gainLoss > 0, 'text-error': stock.gainLoss < 0}"> {{stock.gainLoss | number:2}} %</span></td>
@@ -27,4 +27,6 @@
         </tr>
     </tbody>
 </table>
+
+
 
