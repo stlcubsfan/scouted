@@ -12,10 +12,12 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require sugar.min
 //= require twitter/bootstrap
 //= require turbolinks
 //= require angular.min
 //= require angular-route
 //= require angular-resource
+//= require angular-ui-router.min
 //= require stockScouter
 //= require_tree .

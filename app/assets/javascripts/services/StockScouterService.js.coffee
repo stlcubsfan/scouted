@@ -8,3 +8,5 @@ angular.module('stockScouterApp').factory 'StockScouterList', ($resource, $http)
 
     all: ->
       @service.query((-> null), @errorHandler)
+    raw: ->
+      @service

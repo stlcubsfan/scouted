@@ -1,8 +1,5 @@
-angular.module('stockScouterApp').controller "StockScouterListController", ($scope, StockScouterList) ->
+angular.module('stockScouterApp').controller "StockScouterListController", ($rootScope, $scope, StockScouterList) ->
 
-  $scope.init = () ->
-
-    @listService = new StockScouterList()
-    $scope.list = @listService.all()
-
-  $scope.crap = "crap"
+  @listService = new StockScouterList()
+  $scope.list = @listService.all()
+  $rootScope.$stockList = $scope.list
