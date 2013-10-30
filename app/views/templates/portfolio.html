@@ -12,15 +12,18 @@
             <th>Current</th>
             <th>Gain/Loss</th>
             <th class="text-center">In Top 50 List</th>
+            <th>Rating</th>
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="stock in portfolioStocks">
+        <tr ng-repeat="stock in portfolioStocks"
+            ng-class="stock.adviceClass">
             <td>{{stock.sym}}</td>
             <td>{{stock.price | currency}} </td>
             <td>{{stock.currentPrice | currency }}</td>
             <td><span ng-class="{'text-success': stock.gainLoss > 0, 'text-error': stock.gainLoss < 0}"> {{stock.gainLoss | number:2}} %</span></td>
             <td class="text-center"><i class="fa fa-2x" ng-class="{'fa-check-square-o text-success': stock.inList, 'fa-exclamation text-error': !stock.inList}"></i></td>
+            <td class="text-center">{{stock.rating}}</td>
         </tr>
     </tbody>
 </table>
