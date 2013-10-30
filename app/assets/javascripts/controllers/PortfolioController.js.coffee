@@ -17,7 +17,6 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
         n['currentPrice'] = data.price
         n['rating'] = data.rating
         n['gainLoss'] = makingMoney n['price'], n['currentPrice']
-        console.log(n)
 
   makingMoney = (price, currentPrice) ->
     val = Math.round (((currentPrice - price) / currentPrice) * 10000)
