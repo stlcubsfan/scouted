@@ -1,4 +1,4 @@
-angular.module('stockScouterApp').controller "PortfolioController", ($rootScope, $scope, PortfolioService, StockScouterList) ->
+angular.module('stockScouterApp').controller "PortfolioController", ($rootScope, $scope, PortfolioService, StockScouterList, CurrentStockInfo) ->
 
   @scouterService = new StockScouterList()
 
@@ -6,18 +6,22 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
   symList = []
   @scouterService.raw().query (data) ->
     @portfolioService = new PortfolioService()
+    @currentStockInfoService = new CurrentStockInfo()
     topStocks = data
     $scope.portfolioStocks = @portfolioService.all()
     symList = topStocks.map (n) ->
       return n["sym"]
     $scope.portfolioStocks.forEach (n) ->
       n['inList'] = symList.some n.sym
-  $scope.makingMoney = (sym, price) ->
-    matchedStock = topStocks.find {'sym': sym}
-    if matchedStock
-      val = Math.round (((matchedStock.price - price) / matchedStock.price) * 10000)
-      val / 100
-    else
-      0
+      @currentStockInfoService.raw().get {sym: n.sym}, (data) ->
+        n['currentPrice'] = data.price
+        n['rating'] = data.rating
+        n['gainLoss'] = makingMoney n['price'], n['currentPrice']
+        console.log(n)
+
+  makingMoney = (price, currentPrice) ->
+    val = Math.round (((currentPrice - price) / currentPrice) * 10000)
+    val / 100
+
 
 

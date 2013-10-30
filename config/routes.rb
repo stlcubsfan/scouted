@@ -4,7 +4,11 @@ Scouted::Application.routes.draw do
   resources :users
 
   namespace "api" do
-    resources "stock_scouter", :only => [:index]
+    resources "stock_scouter" do
+      member do
+        get 'currentStockInfo'
+      end
+    end
   end
 
   get '/templates/:path.html' => 'templates#template', :constraints => {:path => /.+/}

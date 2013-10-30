@@ -25,4 +25,14 @@ class Api::StockScouterController < ApplicationController
     render :json => stocks
     #end
   end
+
+  def currentStockInfo
+    agent = Mechanize.new
+    stock = {}
+    agent.get("http://investing.money.msn.com/investments/stock-price/?symbol=#{params['id']}") do |page|
+      stock[:rating] = page.search("div.rat a").text()
+      stock[:price] = page.search("span.lp").text()
+    end
+    render :json => stock
+  end
 end
