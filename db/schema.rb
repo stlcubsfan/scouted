@@ -11,10 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131024022526) do
+ActiveRecord::Schema.define(version: 20131031231208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "positions", force: true do |t|
+    t.string   "symbol"
+    t.float    "purchase_price"
+    t.float    "shares"
+    t.date     "purchase_date"
+    t.date     "sold_date"
+    t.float    "sold_price"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "roles", force: true do |t|
     t.string   "name"
