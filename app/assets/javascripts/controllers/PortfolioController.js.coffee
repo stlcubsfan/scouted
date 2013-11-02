@@ -12,14 +12,13 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
       symList = topStocks.map (n) ->
         return n["sym"]
       $scope.portfolioStocks.forEach (n) ->
-        n['inList'] = symList.some n.sym
+        n['inList'] = symList.some n.symbol
         @currentStockInfoService.raw().get {sym: n.symbol}, (data) ->
           n['currentPrice'] = data.price
           n['rating'] = data.rating
           n['gainLoss'] = makingMoney n['purchase_price'], n['currentPrice']
           n['advice'] = getAdvice(n)
   addPosition = ->
-    alert("adding position")
     newPos = new PortfolioService({symbol: $scope.stockSymbol});
     newPos.purchase_price = $scope.pricePaid
     newPos.purchase_date = $scope.datePurchased
