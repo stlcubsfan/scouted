@@ -1,23 +1,49 @@
 angular.module('stockScouterApp').controller "PortfolioController", ($rootScope, $scope, PortfolioService, StockScouterList, CurrentStockInfo) ->
 
   @scouterService = new StockScouterList()
-
+  $scope.portfolioStocks = []
   topStocks = []
   symList = []
   @scouterService.raw().query (data) ->
-    @portfolioService = new PortfolioService()
     @currentStockInfoService = new CurrentStockInfo()
     topStocks = data
-    $scope.portfolioStocks = @portfolioService.all()
-    symList = topStocks.map (n) ->
-      return n["sym"]
-    $scope.portfolioStocks.forEach (n) ->
-      n['inList'] = symList.some n.sym
-      @currentStockInfoService.raw().get {sym: n.sym}, (data) ->
-        n['currentPrice'] = data.price
-        n['rating'] = data.rating
-        n['gainLoss'] = makingMoney n['price'], n['currentPrice']
-        n['advice'] = getAdvice(n)
+    PortfolioService.query {style: "open"}, (data) ->
+      $scope.portfolioStocks = data
+      symList = topStocks.map (n) ->
+        return n["sym"]
+      $scope.portfolioStocks.forEach (n) ->
+        n['inList'] = symList.some n.sym
+        @currentStockInfoService.raw().get {sym: n.symbol}, (data) ->
+          n['currentPrice'] = data.price
+          n['rating'] = data.rating
+          n['gainLoss'] = makingMoney n['purchase_price'], n['currentPrice']
+          n['advice'] = getAdvice(n)
+  addPosition = ->
+    alert("adding position")
+    newPos = new PortfolioService({symbol: $scope.stockSymbol});
+    newPos.purchase_price = $scope.pricePaid
+    newPos.purchase_date = $scope.datePurchased
+    newPos.shares = $scope.sharesPurchased
+    newPos.$save (pos, stat) ->
+      @currentStockInfoService.raw().get {sym: pos.symbol}, (data) ->
+        pos['currentPrice'] = data.price
+        pos['rating'] = data.rating
+        pos['gainLoss'] = makingMoney pos['purchase_price'], pos['currentPrice']
+        pos['advice'] = getAdvice(pos)
+      $scope.portfolioStocks.push(pos)
+      $scope.symbol = ""
+      $scope.datePurchased = ""
+      $scope.pricePaid = ""
+      $scope.sharesPurchased = ""
+      $scope.showAddForm = false
+
+
+  cancelAddPosition = ->
+    alert("canceled add position")
+    $scope.showAddForm = false
+
+  $scope.submitAddPosition = addPosition
+  $scope.cancelAddPosition = cancelAddPosition
 
   makingMoney = (price, currentPrice) ->
     val = ((currentPrice - price) / currentPrice) * 100

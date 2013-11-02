@@ -9,12 +9,7 @@ Scouted::Application.routes.draw do
         get 'currentStockInfo'
       end
     end
-    resource "positions" do
-      collection do
-        get "open_positions"
-        get "closed_positions"
-      end
-    end
+    resources "positions"
   end
 
   get '/templates/:path.html' => 'templates#template', :constraints => {:path => /.+/}

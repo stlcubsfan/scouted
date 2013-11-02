@@ -18,8 +18,8 @@
     <tbody>
         <tr ng-repeat="stock in portfolioStocks"
             ng-class="stock.advice.val" >
-            <td><a tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="{{stock.advice.msg}}">{{stock.sym}}</a></td>
-            <td>{{stock.price | currency}} </td>
+            <td><a tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="{{stock.advice.msg}}">{{stock.symbol}}</a></td>
+            <td>{{stock.purchase_price | currency}} </td>
             <td>{{stock.currentPrice | currency }}</td>
             <td><span ng-class="{'text-success': stock.gainLoss > 0, 'text-error': stock.gainLoss < 0}"> {{stock.gainLoss | number:2}} %</span></td>
             <td class="text-center"><i class="fa fa-2x" ng-class="{'fa-check-square-o text-success': stock.inList, 'fa-exclamation text-error': !stock.inList}"></i></td>
@@ -27,6 +27,43 @@
         </tr>
     </tbody>
 </table>
+<div id="addToPortfolio" ng-show="!showAddForm">
+    <button class="btn btn-large btn-primary" ng-click="showAddForm = true"><i class="fa fa-plus"></i>  Add Position</button>
+</div>
+<div id="addToPortfolioForm" ng-show="showAddForm">
+    <form class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label" for="stockSymbol">Symbol</label>
+            <div class="controls">
+                <input type="text" id="stockSymbol" ng-model="stockSymbol" required>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="sharesPurchased">Shares</label>
+            <div class="controls">
+                <input type="number" id="sharesPurchased" ng-model="sharesPurchased" required min="1" step="any">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="pricePaid">Price</label>
+            <div class="controls">
+                <input type="number" id="pricePaid" ng-model="pricePaid" required min="0" step="any">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="datePurchased">Purchase Date</label>
+            <div class="controls">
+                <input type="date" id="datePurchased" ng-model="datePurchased" required>
+            </div>
+        </div>
+        <div class="control-group">
 
+            <div class="controls">
+                <input type="submit" class="btn btn-success" ng-click="submitAddPosition()">
+                <button class="btn btn-inverse" ng-click="cancelAddPosition()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
 
 
