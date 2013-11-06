@@ -3,7 +3,7 @@ stockScouterApp = angular.module('stockScouterApp', ['ngResource', 'ngRoute', 'u
   $rootScope.$stateParams = $stateParams
 ])
 
-stockScouterApp.config (['$stateProvider', '$urlRouterProvider', ($stateProvider, $urlRouterProvider) ->
+stockScouterApp.config (['$stateProvider', '$urlRouterProvider', '$httpProvider',  ($stateProvider, $urlRouterProvider, $httpProvider) ->
   $urlRouterProvider.when "", "/"
   $stateProvider.state 'index', {
     url: "/",
@@ -18,6 +18,11 @@ stockScouterApp.config (['$stateProvider', '$urlRouterProvider', ($stateProvider
       }
     }
   }
+  authToken = $("meta[name=\"csrf-token\"]").attr("content")
+  $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = authToken
+  defaults = $httpProvider.defaults.headers
+  defaults.patch = defaults.patch || {}
+  defaults.patch['Content-Type'] = 'application/json'
 ])
 
 $(document).on 'page:load', ->

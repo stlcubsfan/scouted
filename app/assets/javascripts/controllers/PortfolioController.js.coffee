@@ -36,13 +36,60 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
       $scope.sharesPurchased = ""
       $scope.showAddForm = false
 
-
-  cancelAddPosition = ->
-    alert("canceled add position")
+  displayEditForm = (stock) ->
     $scope.showAddForm = false
+    $scope.stockSymbol = stock.symbol
+    $scope.positionId = stock.id
+    $scope.sharesPurchased = stock.shares
+    $scope.pricePaid = stock.purchase_price
+    $scope.datePurchased = stock.purchase_date
+    $scope.showEditForm = true
+
+  submitEditPosition = ->
+    newPos = new PortfolioService {id: $scope.positionId}
+    alert(newPos.id)
+    newPos.symbol = $scope.stockSymbol
+    newPos.purchase_price = $scope.pricePaid
+    newPos.purchase_date = $scope.datePurchased
+    newPos.shares = $scope.sharesPurchased
+    newPos.$update newPos, ->
+      @currentStockInfoService.raw().get {sym: newPos.symbol}, (data) ->
+        newPos['currentPrice'] = data.price
+        newPos['rating'] = data.rating
+        newPos['gainLoss'] = makingMoney newPos['purchase_price'], newPos['currentPrice']
+        newPos['advice'] = getAdvice(newPos)
+      origPos = $scope.portfolioStocks.find (oldPos) ->
+        oldPos.id = newPos.id
+      origPos.purchase_price = newPos.purchase_price
+      $scope.stockSymbol = ""
+      $scope.datePurchased = ""
+      $scope.pricePaid = ""
+      $scope.sharesPurchased = ""
+      $scope.showEditForm = false
+  cancelAddPosition = ->
+    $scope.stockSymbol = ""
+    $scope.datePurchased = ""
+    $scope.pricePaid = ""
+    $scope.sharesPurchased = ""
+    $scope.showAddForm = false
+    $scope.showEditForm = false
+  cancelEditPosition = ->
+    $scope.stockSymbol = ""
+    $scope.datePurchased = ""
+    $scope.pricePaid = ""
+    $scope.sharesPurchased = ""
+    $scope.showEditForm = false
+    $scope.showEditForm = false
+
+  $scope.comingSoon = ->
+    alert("Coming Soon!!")
+
 
   $scope.submitAddPosition = addPosition
   $scope.cancelAddPosition = cancelAddPosition
+  $scope.submitEditPosition = submitEditPosition
+  $scope.cancelEditPosition = cancelEditPosition
+  $scope.displayEditForm = displayEditForm
 
   makingMoney = (price, currentPrice) ->
     val = ((currentPrice - price) / currentPrice) * 100

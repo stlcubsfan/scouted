@@ -1,4 +1,5 @@
 class Api::PositionsController < ApplicationController
+  before_filter :get_current_user
 
   def index
     if params[:style] == 'open'
@@ -21,7 +22,22 @@ class Api::PositionsController < ApplicationController
 
   end
 
+  def update
+    @position = Position.find(params[:id])
+    if @position.user == @current_user
+      if @position.update_attributes(position_params)
+        render :json => @position, status: :ok
+      else
+        render :json => @position.errors, status: :unprocessable_entity
+      end
+    end
+  end
+
   private
+
+  def get_current_user
+    @current_user = current_user
+  end
 
   def open_positions
     positions = []

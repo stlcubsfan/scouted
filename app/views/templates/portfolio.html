@@ -4,15 +4,17 @@
         <tr>
             <th></th>
             <th colspan="3" class="text-center">Price</th>
-            <th></th>
+            <th colspan="3"></th>
+
         </tr>
         <tr>
-            <th>Symbol</th>
+            <th>Symbol <strong>**</strong></th>
             <th>Paid</th>
             <th>Current</th>
             <th>Gain/Loss</th>
-            <th class="text-center">In Top 50 List</th>
+            <th class="text-center">Top 50 List?</th>
             <th>Rating</th>
+            <th colspan="2" class="text-center">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -24,10 +26,14 @@
             <td><span ng-class="{'text-success': stock.gainLoss > 0, 'text-error': stock.gainLoss < 0}"> {{stock.gainLoss | number:2}} %</span></td>
             <td class="text-center"><i class="fa fa-2x" ng-class="{'fa-check-square-o text-success': stock.inList, 'fa-exclamation text-error': !stock.inList}"></i></td>
             <td class="text-center">{{stock.rating}}</td>
+            <td><button tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="For when you made a mistake" class="btn btn-info" ng-click="displayEditForm(stock)">Edit</button>
+                <button tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="For when sell a position" class="btn btn-success" ng-click="comingSoon()">Sell</button></td>
         </tr>
     </tbody>
 </table>
-<div id="addToPortfolio" ng-show="!showAddForm">
+<div class="alert alert-info"><strong>** Mouseover Stock Symbol for Advice</strong></div>
+<p></p>
+<div id="addToPortfolio" ng-show="!showAddForm && !showEditForm">
     <button class="btn btn-large btn-primary" ng-click="showAddForm = true"><i class="fa fa-plus"></i>  Add Position</button>
 </div>
 <div id="addToPortfolioForm" ng-show="showAddForm">
@@ -65,5 +71,40 @@
         </div>
     </form>
 </div>
+<div id="editPortfolioForm" ng-show="showEditForm">
+    <form class="form-horizontal">
+        <input type="hidden" id="editId" ng-model="positionId"/>
+        <div class="control-group">
+            <label class="control-label" for="editStockSymbol">Symbol</label>
+            <div class="controls">
+                <input type="text" id="editStockSymbol" ng-model="stockSymbol" required>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="editSharesPurchased">Shares</label>
+            <div class="controls">
+                <input type="number" id="editSharesPurchased" ng-model="sharesPurchased" required min="1" step="any">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="editPricePaid">Price</label>
+            <div class="controls">
+                <input type="number" id="editPricePaid" ng-model="pricePaid" required min="0" step="any">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="editDatePurchased">Purchase Date</label>
+            <div class="controls">
+                <input type="date" id="editDatePurchased" ng-model="datePurchased" required>
+            </div>
+        </div>
+        <div class="control-group">
 
+            <div class="controls">
+                <input type="submit" class="btn btn-success" ng-click="submitEditPosition()">
+                <button class="btn btn-inverse" ng-click="cancelEditPosition()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
 
