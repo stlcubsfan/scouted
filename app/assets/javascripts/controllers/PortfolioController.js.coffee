@@ -25,11 +25,12 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
     newPos.shares = $scope.sharesPurchased
     newPos.$save (pos, stat) ->
       @currentStockInfoService.raw().get {sym: pos.symbol}, (data) ->
+        pos['inList'] = symList.some pos.symbol
         pos['currentPrice'] = data.price
         pos['rating'] = data.rating
         pos['gainLoss'] = makingMoney pos['purchase_price'], pos['currentPrice']
         pos['advice'] = getAdvice(pos)
-      $scope.portfolioStocks.push(pos)
+        $scope.portfolioStocks.push(pos)
       $scope.symbol = ""
       $scope.datePurchased = ""
       $scope.pricePaid = ""
@@ -47,20 +48,27 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
 
   submitEditPosition = ->
     newPos = new PortfolioService {id: $scope.positionId}
-    alert(newPos.id)
     newPos.symbol = $scope.stockSymbol
     newPos.purchase_price = $scope.pricePaid
     newPos.purchase_date = $scope.datePurchased
     newPos.shares = $scope.sharesPurchased
     newPos.$update newPos, ->
       @currentStockInfoService.raw().get {sym: newPos.symbol}, (data) ->
-        newPos['currentPrice'] = data.price
-        newPos['rating'] = data.rating
-        newPos['gainLoss'] = makingMoney newPos['purchase_price'], newPos['currentPrice']
-        newPos['advice'] = getAdvice(newPos)
-      origPos = $scope.portfolioStocks.find (oldPos) ->
-        oldPos.id = newPos.id
-      origPos.purchase_price = newPos.purchase_price
+
+
+        origPos = $scope.portfolioStocks.find (oldPos) ->
+          oldPos.id == newPos.id
+        console.log(origPos)
+        console.log(newPos)
+        origPos.currentPrice = data.price
+        origPos.rating = data.rating
+        origPos.purchase_price = newPos['purchase_price']
+        origPos.purchase_date = newPos['purchase_date']
+        origPos.symbol = newPos['symbol']
+
+        origPos.gainLoss = makingMoney origPos.purchase_price, origPos.currentPrice
+        origPos.inList = symList.some origPos.symbol
+        origPos.advice = getAdvice(origPos)
       $scope.stockSymbol = ""
       $scope.datePurchased = ""
       $scope.pricePaid = ""
