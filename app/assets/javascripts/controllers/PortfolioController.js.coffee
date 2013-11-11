@@ -54,12 +54,8 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
     newPos.shares = $scope.sharesPurchased
     newPos.$update newPos, ->
       @currentStockInfoService.raw().get {sym: newPos.symbol}, (data) ->
-
-
         origPos = $scope.portfolioStocks.find (oldPos) ->
           oldPos.id == newPos.id
-        console.log(origPos)
-        console.log(newPos)
         origPos.currentPrice = data.price
         origPos.rating = data.rating
         origPos.purchase_price = newPos['purchase_price']
