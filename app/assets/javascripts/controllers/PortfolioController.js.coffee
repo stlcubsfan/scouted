@@ -4,6 +4,7 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
   $scope.portfolioStocks = []
   topStocks = []
   symList = []
+  $scope.showSellModal = false
   @scouterService.raw().query (data) ->
     @currentStockInfoService = new CurrentStockInfo()
     topStocks = data
@@ -88,12 +89,19 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
   $scope.comingSoon = ->
     alert("Coming Soon!!")
 
+  displaySellPosition = (stock) ->
+    $scope.sellStockId = stock.id
+    $scope.sellStockSymbol = stock.symbol
+    $scope.sellStockShares = stock.shares
+    $("#sellModal").modal();
+    $scope.showSellModal = true
 
   $scope.submitAddPosition = addPosition
   $scope.cancelAddPosition = cancelAddPosition
   $scope.submitEditPosition = submitEditPosition
   $scope.cancelEditPosition = cancelEditPosition
   $scope.displayEditForm = displayEditForm
+  $scope.displaySellPosition = displaySellPosition
 
   makingMoney = (price, currentPrice) ->
     val = ((currentPrice - price) / currentPrice) * 100

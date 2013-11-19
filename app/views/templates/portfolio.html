@@ -27,7 +27,7 @@
             <td class="text-center"><i class="fa fa-2x" ng-class="{'fa-check-square-o text-success': stock.inList, 'fa-exclamation text-error': !stock.inList}"></i></td>
             <td class="text-center">{{stock.rating}}</td>
             <td><button tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="For when you made a mistake" class="btn btn-info" ng-click="displayEditForm(stock)">Edit</button>
-                <button tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="For when sell a position" class="btn btn-success" ng-click="comingSoon()">Sell</button></td>
+                <button tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="For when sell a position" class="btn btn-success" ng-click="displaySellPosition(stock)">Sell</button></td>
         </tr>
     </tbody>
 </table>
@@ -106,5 +106,49 @@
             </div>
         </div>
     </form>
+</div>
+
+<div id="sellModal" ng-show="showSellModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Sell {{sellStockSymbol}}</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <input type="hidden" id="sellPositionId" ng-model="sellPositionId"/>
+            <div class="control-group">
+                <label class="control-label" for="sellStockPrice">Sale Price</label>
+                <div class="controls">
+                    <input type="number" id="sellStockPrice"  required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="sellStockDate">Sale Date</label>
+                <div class="controls">
+                    <input type="date" id="sellStockDate" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="sellAllShares">Shares Sold</label>
+                <div class="controls">
+                    <label class="radio">
+                        <input type="radio" name="sellSharesRadio" id="sellAllShares" value="sellAll" checked>
+                        Sell All {{sellStockShares}} Shares
+                    </label>
+                    <label class="radio">
+                        <input type="radio" name="sellSharesRadio" id="sellSomeShares" value="someShares">
+                        Sell Some Shares:
+                    </label>
+                </div>
+                <label class="control-label" for="sharesSold"># Shares</label>
+                <div class="controls">
+                    <input type="number" id="sharesSold" ng-min="1" disabled/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary">Sell</button>
+    </div>
 </div>
 
