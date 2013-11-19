@@ -115,40 +115,40 @@
     </div>
     <div class="modal-body">
         <form class="form-horizontal">
-            <input type="hidden" id="sellPositionId" ng-model="sellPositionId"/>
+            <input type="hidden" id="sellStockId" ng-model="sellStockId"/>
             <div class="control-group">
                 <label class="control-label" for="sellStockPrice">Sale Price</label>
                 <div class="controls">
-                    <input type="number" id="sellStockPrice"  required>
+                    <input type="number" id="sellStockPrice" ng-model="sellStockPrice" min="0" required>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="sellStockDate">Sale Date</label>
                 <div class="controls">
-                    <input type="date" id="sellStockDate" required>
+                    <input type="date" id="sellStockDate" ng-model="sellStockDate" required>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="sellAllShares">Shares Sold</label>
                 <div class="controls">
                     <label class="radio">
-                        <input type="radio" name="sellSharesRadio" id="sellAllShares" value="sellAll" checked>
-                        Sell All {{sellStockShares}} Shares
+                        <input type="radio" name="sellSharesRadio" ng-model="sellHowManyShares" id="sellAllShares" value="sellAll" checked ng-click="disableSomeShares(true)">
+                        Sell <strong>All</strong> ({{sellStockShares}}) Shares
                     </label>
                     <label class="radio">
-                        <input type="radio" name="sellSharesRadio" id="sellSomeShares" value="someShares">
+                        <input type="radio" name="sellSharesRadio" ng-model="sellHowManyShares" id="sellSomeShares" value="someShares" ng-click="disableSomeShares(false)">
                         Sell Some Shares:
                     </label>
                 </div>
                 <label class="control-label" for="sharesSold"># Shares</label>
                 <div class="controls">
-                    <input type="number" id="sharesSold" ng-min="1" disabled/>
+                    <input type="number" id="sharesSold" ng-model="sharesSold" ng-min="1" disabled ng-required="sellHowManyShares === 'someShares'"/>
                 </div>
             </div>
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary">Sell</button>
+        <button class="btn btn-primary" ng-click="sellStock()">Sell</button>
     </div>
 </div>
 

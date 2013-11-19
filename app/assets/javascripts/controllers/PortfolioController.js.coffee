@@ -93,8 +93,18 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
     $scope.sellStockId = stock.id
     $scope.sellStockSymbol = stock.symbol
     $scope.sellStockShares = stock.shares
-    $("#sellModal").modal();
+    $("#sellModal").modal()
     $scope.showSellModal = true
+
+  sellStock = ->
+    position = {id: $scope.sellStockId, sale_price: $scope.sellStockPrice, sale_date: $scope.sellStockDate}
+    console.log(position)
+    $("#sellModal").modal("hide")
+    true
+
+  disableSomeShares = (val) ->
+    $("#sharesSold").attr("disabled", val)
+    true
 
   $scope.submitAddPosition = addPosition
   $scope.cancelAddPosition = cancelAddPosition
@@ -102,6 +112,8 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
   $scope.cancelEditPosition = cancelEditPosition
   $scope.displayEditForm = displayEditForm
   $scope.displaySellPosition = displaySellPosition
+  $scope.disableSomeShares = disableSomeShares
+  $scope.sellStock = sellStock
 
   makingMoney = (price, currentPrice) ->
     val = ((currentPrice - price) / currentPrice) * 100
