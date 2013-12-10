@@ -107,16 +107,12 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
       sell_how_many: $scope.sellHowManyShares
 
     }
-    console.log(position)
     position.$update position, ->
       if oldPos.shares > $scope.sharesSold
         oldPos.shares -= $scope.sharesSold
       else
         $scope.portfolioStocks = $scope.portfolioStocks.remove (pos) ->
           pos.id == oldPos.id
-
-
-    console.log(position)
     $("#sellModal").modal("hide")
     true
 
