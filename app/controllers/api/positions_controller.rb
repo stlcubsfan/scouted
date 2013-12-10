@@ -25,11 +25,35 @@ class Api::PositionsController < ApplicationController
   def update
     @position = Position.find(params[:id])
     if @position.user == @current_user
-      if @position.update_attributes(position_params)
-        render :json => @position, status: :ok
+      if params[:sell_how_many] == 'someShares'
+        if params[:shares].to_i > @position.shares
+          render :json => {"error" => "Can't sell that many shares"}, status: :unprocessable_entity
+          return
+        end
+        @newPosition = Position.new(update_position_params)
+        @newPosition.symbol = @position.symbol
+        @newPosition.purchase_date = @position.purchase_date
+        @newPosition.purchase_price= @position.purchase_price
+        @newPosition.user = @position.user
+        @newPosition.id = nil
+
+        @newPosition.save()
+        shares = @position.shares - params[:shares].to_i
+        if @position.update_attribute(:shares, shares)
+          render :json => @position, status: :ok
+        else
+          render :json => @position.errors, status: :unprocessable_entity
+        end
       else
-        render :json => @position.errors, status: :unprocessable_entity
+
+        if @position.update_attributes(update_position_params)
+          render :json => @position, status: :ok
+        else
+
+          render :json => @position.errors, status: :unprocessable_entity
+        end
       end
+
     end
   end
 
@@ -54,5 +78,9 @@ class Api::PositionsController < ApplicationController
 
   def position_params
     params.require(:position).permit(:symbol, :shares, :purchase_price, :purchase_date)
+  end
+
+  def update_position_params
+    params.require(:position).permit(:id, :sold_price, :sold_date, :sell_how_many, :shares, :symbol, :purchase_price, :purchase_date)
   end
 end

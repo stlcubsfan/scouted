@@ -97,7 +97,25 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
     $scope.showSellModal = true
 
   sellStock = ->
-    position = {id: $scope.sellStockId, sale_price: $scope.sellStockPrice, sale_date: $scope.sellStockDate}
+    oldPos = $scope.portfolioStocks.find (pos) ->
+      pos.id == $scope.sellStockId
+    position = new PortfolioService {
+      id: $scope.sellStockId,
+      sold_price: $scope.sellStockPrice,
+      sold_date: $scope.sellStockDate,
+      shares: $scope.sharesSold,
+      sell_how_many: $scope.sellHowManyShares
+
+    }
+    console.log(position)
+    position.$update position, ->
+      if oldPos.shares > $scope.sharesSold
+        oldPos.shares -= $scope.sharesSold
+      else
+        $scope.portfolioStocks = $scope.portfolioStocks.remove (pos) ->
+          pos.id == oldPos.id
+
+
     console.log(position)
     $("#sellModal").modal("hide")
     true
