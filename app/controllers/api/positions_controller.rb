@@ -57,6 +57,14 @@ class Api::PositionsController < ApplicationController
     end
   end
 
+  def destroy
+    @position = Position.find(params[:id])
+    if @position.user == @current_user
+      @position.destroy
+    end
+    render :json => @position, status: :ok
+  end
+
   private
 
   def get_current_user

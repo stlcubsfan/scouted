@@ -120,6 +120,13 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
     $("#sharesSold").attr("disabled", val)
     true
 
+  killPosition = (stock) ->
+    position = new PortfolioService { id: stock.id}
+    position.$delete position
+    $scope.portfolioStocks = $scope.portfolioStocks.remove (pos) ->
+      pos.id == position.id
+
+
   $scope.submitAddPosition = addPosition
   $scope.cancelAddPosition = cancelAddPosition
   $scope.submitEditPosition = submitEditPosition
@@ -128,6 +135,7 @@ angular.module('stockScouterApp').controller "PortfolioController", ($rootScope,
   $scope.displaySellPosition = displaySellPosition
   $scope.disableSomeShares = disableSomeShares
   $scope.sellStock = sellStock
+  $scope.killPosition = killPosition
 
   makingMoney = (price, currentPrice) ->
     val = ((currentPrice - price) / currentPrice) * 100
