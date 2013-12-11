@@ -8,7 +8,7 @@
 
         </tr>
         <tr>
-            <th>Symbol <strong>**</strong></th>
+            <th>Symbol<strong>**</strong></th>
             <th>Paid</th>
             <th>Current</th>
             <th>Gain/Loss</th>
@@ -20,7 +20,10 @@
     <tbody>
         <tr ng-repeat="stock in portfolioStocks"
             ng-class="stock.advice.val" >
-            <td><a tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="{{stock.advice.msg}}">{{stock.symbol}}</a></td>
+            <td>
+                <a tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="{{stock.advice.msg}}">{{stock.symbol}}</a>
+                <button tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="Kill it" class="btn btn-small btn-warning" ng-click="killPosition(stock)"> X </button>
+            </td>
             <td>{{stock.purchase_price | currency}} </td>
             <td>{{stock.currentPrice | currency }}</td>
             <td><span ng-class="{'text-success': stock.gainLoss > 0, 'text-error': stock.gainLoss < 0}"> {{stock.gainLoss | number:2}} %</span></td>
@@ -29,7 +32,7 @@
             <td>
                 <button tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="For when you made a mistake" class="btn btn-info" ng-click="displayEditForm(stock)">Edit</button>
                 <button tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="For when sell a position" class="btn btn-success" ng-click="displaySellPosition(stock)">Sell</button>
-                <button tooltip rel="tooltip" data-toggle="tooltip" data-placement="top" title data-original-title="Kill it" class="btn btn-warning" ng-click="killPosition(stock)"> X </button>
+
             </td>
         </tr>
     </tbody>
