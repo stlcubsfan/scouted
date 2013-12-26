@@ -15,7 +15,7 @@ gem 'less-rails'
 gem 'pg'
 gem 'rolify'
 gem 'simple_form', '>= 3.0.0.rc'
-gem 'therubyracer', :platform=>:ruby
+
 gem 'thin'
 gem 'twitter-bootstrap-rails'
 gem 'mechanize'
